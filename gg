@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Éclat x L’Ancour Paris</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Roboto', sans-serif;
+            background-color: black;
+            color: white;
+            text-align: center;
+        }
+        #background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        #content {
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        #logo {
+            max-width: 300px;
+            margin-bottom: 20px;
+        }
+        #coming-soon {
+            font-size: 4em;
+            font-family: 'Roboto Mono', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div id="background"></div>
+    <div id="content">
+        <img id="logo" src="/mnt/data/Exxz.JPG" alt="Logo">
+        <h1>Éclat x L’Ancour Paris</h1>
+        <h2>La mode qui suit la Sunnah</h2>
+        <div id="coming-soon">Coming Soon</div>
+    </div>
+
+    <!-- Include three.js for background animation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Initialize Three.js and create a scene for dynamic background
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('background').appendChild(renderer.domElement);
+
+        // Load the background image as a texture
+        const textureLoader = new THREE.TextureLoader();
+        textureLoader.load('/mnt/data/Photoeclaj.JPG', function(texture) {
+            const geometry = new THREE.PlaneGeometry(2, 2, 0);
+            const material = new THREE.MeshBasicMaterial({ map: texture });
+            const mesh = new THREE.Mesh(geometry, material);
+            scene.add(mesh);
+            camera.position.z = 1;
+            animate();
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            // Add dynamic movement to the background
+            scene.rotation.x += 0.001;
+            scene.rotation.y += 0.001;
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', function() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
